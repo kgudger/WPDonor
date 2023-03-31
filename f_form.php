@@ -18,7 +18,20 @@ function f_form_fun() {
  */
 
 include_once("includes/dlist.php");
+include_once("includes/f_formpage.php");
+include_once("includes/f_formpage.php");
 
+/**
+ * The checkArray defines what checkForm does so you don't
+ * have to overwrite it in the derived class. */
 
+$checkArray = array(
+//	array("isEmpty","fname", "Please select a file."),
+//	array("isEmpty","directory", "Please select a destination folder.")
+);
+
+/// a new instance of the derived class (from MainPage)
+$fform = new fFormPage($db,$sessvar,$checkArray,$secret3a,$sftpacct,$sftppwd,$sftpurl,$sftpsftp,$sftpport) ;
+/// and ... start it up!  
 return $fform->main("File Upload Form", $uid, "", "");
 }

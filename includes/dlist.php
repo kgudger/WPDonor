@@ -9,26 +9,44 @@ Author URI:  http://www.github.com/kgudger
 License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
+ 
+function get_file() {
+	$row = 1;
+	$recur = array();
+	$one_time = array();
+	$fname = "./wp-content/plugins/WPDonor/includes/DPO SEND_ 2 Year Donation List For Website_2 Year Donation List For Website.csv";
+	if (($handle = fopen($fname, "r")) !== FALSE) {
+		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+			if ($data[7] == 'Y') {
+				array_push($recur, $data);
+				$row++;
+			}
+			else if ($data[7] == 'N') {
+				array_push($one_time, $data);
+			}
+		}
+		fclose($handle);
+		echo "Number of donors: " . $row . "\n";
+	}
+	else 
+		return ("Unable to open $fname");
 
-$row = 1;
-$recur = array();
-$one_time = array();
-$fname = "DPO SEND_ 2 Year Donation List For Website_2 Year Donation List For Website.csv";
-if (($handle = fopen($fname, "r")) !== FALSE) {
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-	    if ($data[7] == 'Y') {
-		    array_push($recur, $data);
-		    $row++;
-	    }
-	    else if ($data[7] == 'N') {
-		    array_push($one_time, $data);
-	    }
-    }
-    fclose($handle);
-    echo "Number of donors: " . $row . "\n";
+	$final = array_by_names($recur, 1);
+	file_out("./wp-content/plugins/WPDonor/includes/recur.csv", $final);	// output recurring csv file
+	$final = array_by_names($one_time, 1);
+	file_out("./wp-content/plugins/WPDonor/includes/onetime.csv",$final);	// output one time csv file
+	echo date('Y', strtotime($final[0][3]));
+	return("Files created");
 }
-else 
-	die("Unable to open $fname");
+
+function file_out($fname, $arrin) {
+	$fp = fopen($fname, 'w');
+	// Loop through file pointer and a line
+	foreach ($arrin as $fields) {
+		fputcsv($fp, $fields);
+	}
+	fclose($fp);
+}	
 
 function array_by_names ( $array1, $index1 ) {
 	$names = array_column($array1, $index1); // finds unique last names
@@ -41,23 +59,5 @@ function array_by_names ( $array1, $index1 ) {
 	return $final;
 }						// with unique last names
 
-$final = array_by_names($recur, 1);
-//print_r($final);
-$fp = fopen('recur.csv', 'w');
-// Loop through file pointer and a line
-foreach ($final as $fields) {
-    fputcsv($fp, $fields);
-}
-fclose($fp);
-
-$final = array_by_names($one_time, 1);
-echo date('Y', strtotime($final[0][3]));
-$fp = fopen('onetime.csv', 'w');
-// Loop through file pointer and a line
-foreach ($final as $fields) {
-    fputcsv($fp, $fields);
-}
-fclose($fp);
-//print_r($final);
 
 ?>
