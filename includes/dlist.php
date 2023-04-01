@@ -14,7 +14,7 @@ function get_file() {
 	$row = 1;
 	$recur = array();
 	$one_time = array();
-	$fname = "./wp-content/plugins/WPDonor/includes/DPO SEND_ 2 Year Donation List For Website_2 Year Donation List For Website.csv";
+	$fname = "./wp-content/plugins/WPDonor/includes/dpo.csv";
 	if (($handle = fopen($fname, "r")) !== FALSE) {
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 			if ($data[7] == 'Y') {
@@ -56,6 +56,14 @@ function array_by_names ( $array1, $index1 ) {
 	foreach ($names as $key => $value) {
 	    array_push($final, $array1[$key]);	// creates array of arrays	
 	}
+	// now alphatize
+	$lname = array_column($final, 1);
+	$fname = array_column($final, 0);
+
+	// Sort the data with volume descending, edition ascending
+	// Add $final as the last parameter, to sort by the common key
+	array_multisort($lname, SORT_ASC, $fname, SORT_ASC, $final);
+
 	return $final;
 }						// with unique last names
 

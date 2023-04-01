@@ -12,10 +12,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 defined( 'ABSPATH' ) or die( 'Ah ah ah, you didn\'t say the magic word' );
 add_shortcode('f_form', 'f_form_fun');
+add_shortcode('l_form', 'l_form_fun');
 function f_form_fun() {
-/**
- * dbstart.php opens the database and gets the user variables
- */
 
 include_once("includes/dlist.php");
 include_once("includes/f_formpage.php");
@@ -35,3 +33,9 @@ $fform = new fFormPage($db,$sessvar,$checkArray,$secret3a,$sftpacct,$sftppwd,$sf
 /// and ... start it up!  
 return $fform->main("File Upload Form", $uid, "", "");
 }
+
+function l_form_fun() {
+	include_once("includes/list.php");
+	return list_donors();;
+}
+

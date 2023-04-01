@@ -54,7 +54,7 @@ function processData(&$uid) {
 			if (in_array($fileExtension, $allowedfileExtensions))
 			{
 				$target_dir = "./wp-content/plugins/WPDonor/includes/";
-				$target_file = $target_dir . $fileName; // filename uploaded from
+				$target_file = $target_dir . "dpo.csv"; // always the same for next step
 				if (file_exists($fileTmpPath))
                                                 chmod($fileTmpPath, 0644);
 				if (move_uploaded_file($fileTmpPath, $target_file)) {
