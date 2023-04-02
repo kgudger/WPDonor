@@ -3,7 +3,7 @@
 Plugin Name: DonorList
 Plugin URI:  http://www.github.com/kgudger/
 Description: Parse donor csv into lists for website
-Version:     0.j
+Version:     0.9
 Author:      Keith Gudger
 Author URI:  http://www.github.com/kgudger
 License:     GPL2
@@ -13,6 +13,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 defined( 'ABSPATH' ) or die( 'Ah ah ah, you didn\'t say the magic word' );
 add_shortcode('f_form', 'f_form_fun');
 add_shortcode('l_form', 'l_form_fun');
+
+/**
+ * Function to upload the file and process it
+ */
 function f_form_fun() {
 
 include_once("includes/dlist.php");
@@ -34,6 +38,8 @@ $fform = new fFormPage($db,$sessvar,$checkArray,$secret3a,$sftpacct,$sftppwd,$sf
 return $fform->main("File Upload Form", $uid, "", "");
 }
 
+/** Function to display the donors on a page
+ */
 function l_form_fun() {
 	include_once("includes/list.php");
 	return list_donors();;

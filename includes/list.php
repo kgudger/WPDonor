@@ -1,4 +1,18 @@
 <?php
+/**
+Plugin URI:  http://www.github.com/kgudger/
+Plugin Name: DonorList
+Description: Parse donor csv into lists for website
+Version:     0.9
+Author:      Keith Gudger
+Author URI:  http://www.github.com/kgudger
+License:     GPL2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ */
+ 
+/** Function to list the donors in appropriate sections
+ * @return returns html for this
+ */
 function list_donors() {
 $message = <<<EOT
 <div class="fusion-fullwidth fullwidth-box fusion-builder-row-8 fusion-flex-container nonhundred-percent-fullwidth non-hundred-percent-height-scrolling" style="background-color: rgba(255,255,255,0);background-position: center center;background-repeat: no-repeat;border-width: 0px 0px 0px 0px;border-color:#eae9e9;border-style:solid;" >
@@ -19,15 +33,17 @@ $message = <<<EOT
 EOT;
 
     $donors = array();
-    $major = 500 ;
-    $fname = "./wp-content/plugins/WPDonor/includes/onetime.csv";
+    $major = 500 ; // amount to decide if major donor
+    $fname = "./wp-content/plugins/WPDonor/includes/onetime.csv"; // gets one time donors
         if (($handle = fopen($fname, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-			preg_match_all('!\d+!', $data[4], $matches);
+			preg_match_all('!\d+!', $data[4], $matches); // matches has amount donated
 			if ($matches[0][0] >= $major ) { // donors over the major donor amount
 				$message .= "<p>" . $data[0] . " " . $data[1] . "<p>";
+				// output major donors
 			} else { 
 				$donors[] = $data;
+				// create $donors array of all other donors
 			}
 		}
 	}
@@ -68,10 +84,11 @@ $message .= <<<EOT
 
 EOT;
 
-    $fname = "./wp-content/plugins/WPDonor/includes/recur.csv";
+    $fname = "./wp-content/plugins/WPDonor/includes/recur.csv"; // recurring donor csv
         if (($handle = fopen($fname, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 			$message .= "<p>" . $data[0] . " " . $data[1] . "<p>";
+			// output recurring donors
 		}
 	}
 
@@ -105,9 +122,9 @@ $message.= <<<EOT
 				<div class="fusion-text fusion-text-4 fusion-text-split-columns fusion-text-columns-3" style=" -webkit-column-count:3; -webkit-column-gap:2em; -webkit-column-width:100px; -moz-column-count:3; -moz-column-gap:2em; -moz-column-width:100px; column-count:3; column-gap:2em; column-width:100px;">
 EOT;
 
-	foreach ($donors as $donor) {
+	foreach ($donors as $donor) { // rest of donors array
 		$message .= "<p>" . $donor[0] . " " . $donor[1] . "<p>";
-	}
+	} 
 
 $message .= <<<EOT
 				</div>

@@ -7,7 +7,7 @@
 * @author Keith Gudger
 * @copyright  (c) 2023, Keith Gudger, all rights reserved
 * @license    https://www.gnu.org/licenses/gpl-3.0.html
-* @version    Release: 1.1
+* @version    Release: 0.9
 * @package    FSCPL
 *
 * @note Has processData and showContent, 
